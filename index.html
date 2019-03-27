@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Canvas Example</title>
+	<style type="text/css">
+		canvas{
+			border: 1px solid black;
+		}
+	</style>
+
+
+</head>
+<body>
+  <canvas id="canvas" width="600" height="600">
+      Here is a sample canvas
+  </canvas>
+	<p>Please select a color: <p>
+	<input type="color" id="color" name="color" value="#FF00FF" onchange="setColor()">
+  <script>
+	var canvas_width = window.innerWidth * .8
+	var canvas_height = window.innerHeight * .8
+  var canvas = document.querySelector('canvas');
+  var ctx = canvas.getContext('2d')
+	var color = "red"
+	var radius = 20
+
+	canvas.setAttribute("width", canvas_width) //set
+	canvas.setAttribute("height", canvas_height)
+
+  function doodle(x,y,radius){
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, 2 * Math.PI)
+    ctx.fillStyle = color;
+    ctx.fill();
+    }
+
+    window.addEventListener('mousemove', function (e) {
+    //console.log(e.pageX); //debugging
+    //console.log(e.pageY); //debugging
+		console.log('mousemove triggered')
+    x = e.pageX;
+    y = e.pageY;
+    doodle(x, y, radius);
+    });
+
+		window.addEventListener('touchmove', function (e) {
+    //console.log(e.pageX); //debugging
+    //console.log(e.pageY); //debugging
+		console.log('touchmove triggered')
+    x = e.pageX;
+    y = e.pageY;
+    doodle(x, y, radius);
+    });
+
+    window.addEventListener('keyup', function (e) {
+			if (e.keyCode == '82'){
+				color = 'red'
+		  } else if (e.keyCode == '66'){
+				color = 'blue'
+			} else if (e.keyCode == '89'){
+				color = 'yellow'
+			} else if  (e.keyCode == '71'){
+				color = 'green'
+			} else if (e.keyCode == '38'){
+				// console.log(radius) //debugging
+				radius = radius + 1
+			} else if (e.keyCode == '40' && radius >= 1){
+				// console.log(radius) //debugging
+				radius = radius - 1
+			} else if  (e.keyCode == '32'){
+				ctx.clearRect(0,0,canvas_width,canvas_height);
+			}
+    });
+
+		//listen for resize
+		window.addEventListener('resize', function (e) {
+			var canvas_width = window.innerWidth * .8 // requery the size of the window
+			var canvas_height = window.innerHeight * .8 // requery the size of the window
+			canvas.setAttribute("width", canvas_width) // apply new width attr to canvas
+			canvas.setAttribute("height", canvas_height) // apply new hieght attr to canvas
+		});
+
+		function setColor(){
+			color = document.querySelector('#color').value
+			console.log(color)
+		}
+
+		window.addEventListener('orientationchange', function (e) {
+				console.log('orientation rtiggered!')
+				ctx.clearRect(0,0,canvas_width,canvas_height);
+		});
+  </script>
+
+</body>
+</html>
